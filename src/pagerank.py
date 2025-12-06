@@ -93,23 +93,21 @@ def build_adjacency_matrix(crawl_json_path):
 
 
 def main():
-    # Test with example matrix
-    test1 = np.array([[0, 1/2, 1/2, 0], # A1
+    # small test
+    test1 = np.array([[0, 1/2, 1/2, 0],
                       [1/3, 0, 0, 1/3],
                       [1/3, 1/2, 0, 1/3],
                       [1/3, 0, 1/2, 1/3]])
-    A1 = test1
-    pr1 = page_rank(A1, TOLERANCE, MAX_ITERS)
+    pr1 = page_rank(test1, TOLERANCE, MAX_ITERS)
     print("Test 1 PageRank:\n", pr1)
     print("Sanity check: sum =", np.sum(pr1))
     
-    # Example: Load crawl data and compute PageRank
-    # Uncomment to use with actual crawl data:
+    # load crawl data and compute pagerank
     crawl_file = "../data/20251201_161020_Umamusume__Pretty_Derby.json"
     A, url_to_index, index_to_url = build_adjacency_matrix(crawl_file)
     pr = page_rank(A, TOLERANCE, MAX_ITERS)
     
-    # Show top 10 pages by PageRank
+    # show top 10 pages by pagerank
     ranked_indices = np.argsort(pr.flatten())[::-1][:10]
     print("\nTop 10 pages by PageRank:")
     for i, idx in enumerate(ranked_indices, 1):
