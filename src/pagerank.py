@@ -74,9 +74,9 @@ def build_adjacency_matrix(crawl_json_path):
         source_url = page['url']
         source_idx = url_to_index[source_url]
         
-        # Get outgoing links that are in the visited set
+        # Get outgoing links that are in the visited set (excluding self-links)
         outgoing_links = [link for link in page['outgoing_links'] 
-                         if link in visited_urls]
+                         if link in visited_urls and link != source_url]
         
         out_degree = len(outgoing_links)
         
@@ -90,6 +90,44 @@ def build_adjacency_matrix(crawl_json_path):
             A[:, source_idx] = 1.0 / n
     
     return A, url_to_index, index_to_url
+
+
+def build_adjacency_list(crawl_json_path, output_json_path=None):
+    """
+    Build an adjacency list from crawl results JSON for visited URLs only.
+    
+    args:
+        crawl_json_path: Path to the JSON file produced by WebCrawler.save_results_json()
+        output_json_path: Optional path to save the adjacency list JSON. If None, doesn't save to file.
+    
+    returns:
+        adjacency_list: Dictionary mapping each URL to a list of URLs it links to (within visited set)
+    """
+    # Load crawl data
+    with open(crawl_json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    pages = data['pages']
+    
+    # Build set of visited URLs
+    visited_urls = {page['url'] for page in pages}
+    
+    # Build adjacency list - only include links to visited pages (excluding self-links)
+    adjacency_list = {}
+    for page in pages:
+        source_url = page['url']
+        # Filter outgoing links to only those in the visited set, excluding self-links
+        outgoing_links = [link for link in page['outgoing_links'] 
+                         if link in visited_urls and link != source_url]
+        adjacency_list[source_url] = outgoing_links
+    
+    # Optionally save to file
+    if output_json_path:
+        with open(output_json_path, 'w', encoding='utf-8') as f:
+            json.dump(adjacency_list, f, indent=2, ensure_ascii=False)
+        print(f"Adjacency list saved to {output_json_path}")
+    
+    return adjacency_list
 
 
 def main():
@@ -114,4 +152,5 @@ def main():
         print(f"{i}. {index_to_url[idx]}: {pr[idx][0]:.6f}")
     
 if __name__ == "__main__":
-    main()
+    # main()
+    build_adjacency_list("../data/20251201_163213_Umamusume__Pretty_Derby.json", "../data/adjacency_list_Umamusume__Pretty_Derby.json")

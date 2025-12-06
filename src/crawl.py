@@ -55,9 +55,10 @@ class WebCrawler:
             external_links_header = soup.find('h2', id='External_links')
             
             links = set()
+            after_external = external_links_header.find_all_next('a') if external_links_header else []
             for anchor in soup.find_all('a', href=True):
                 # Skip links that come after the "External links" section
-                if external_links_header and anchor in external_links_header.find_all_next('a'):
+                if anchor in after_external:
                     continue
 
                 link = urljoin(url, anchor['href'])
