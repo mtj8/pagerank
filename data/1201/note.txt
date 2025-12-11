@@ -1,0 +1,4 @@
+On December 1, Haru Urara showed up on the Wikipedia Main Page, which is why the results are kind of skewed.
+I also didn't exclude the References section, which makes ISBN and The New York Times show up.
+
+The next iteration will hopefully not have these issues

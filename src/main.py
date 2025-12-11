@@ -11,7 +11,7 @@ def main(seed_url="https://en.wikipedia.org/wiki/Umamusume:_Pretty_Derby"):
     # path = crawler.save_results_json()
 
     # Load crawl data to calculate statistics
-    crawl_path = "../data/20251201_163213_Umamusume__Pretty_Derby.json"
+    crawl_path = "../data/20251206_192002_Umamusume__Pretty_Derby.json"
     
     with open(crawl_path, 'r') as f:
         data = json.load(f)

@@ -51,14 +51,14 @@ class WebCrawler:
             response.raise_for_status()
             soup = BeautifulSoup(response.text, 'html.parser')
 
-            # Find the "External links" section to stop extracting links after it
-            external_links_header = soup.find('h2', id='External_links')
+            # skip everything after references
+            references_header = soup.find('h2', id='References')
             
             links = set()
-            after_external = external_links_header.find_all_next('a') if external_links_header else []
+            after_refs = references_header.find_all_next('a') if references_header else []
             for anchor in soup.find_all('a', href=True):
-                # Skip links that come after the "External links" section
-                if anchor in after_external:
+                # Skip links that come after the "References" section
+                if anchor in after_refs:
                     continue
 
                 link = urljoin(url, anchor['href'])
@@ -213,10 +213,9 @@ class WebCrawler:
 
 
 def main():
-    # Example: Crawl Wikipedia pages starting from a topic
     seed = "https://en.wikipedia.org/wiki/Umamusume:_Pretty_Derby"
     
-    crawler = WebCrawler(seed, max_pages=10, max_depth=4)
+    crawler = WebCrawler(seed, max_pages=1000, max_depth=4)
     crawler.crawl()
     
     # Save for later use

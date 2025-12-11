@@ -6,10 +6,6 @@ DAMPING_FACTOR = 0.85
 MAX_ITERS = 100
 TOLERANCE = 1.0e-9
 
-
-
-
-
 def page_rank(A: np.array, eps: float, max_iters: int) -> np.array:
     """
     Compute the PageRank vector R.
@@ -141,7 +137,7 @@ def main():
     print("Sanity check: sum =", np.sum(pr1))
     
     # load crawl data and compute pagerank
-    crawl_file = "../data/20251201_161020_Umamusume__Pretty_Derby.json"
+    crawl_file = "../data/20251206_192002_Umamusume__Pretty_Derby.json"
     A, url_to_index, index_to_url = build_adjacency_matrix(crawl_file)
     pr = page_rank(A, TOLERANCE, MAX_ITERS)
     
@@ -153,4 +149,4 @@ def main():
     
 if __name__ == "__main__":
     # main()
-    build_adjacency_list("../data/20251201_163213_Umamusume__Pretty_Derby.json", "../data/adjacency_list_Umamusume__Pretty_Derby.json")
+    build_adjacency_list("../data/20251206_192002_Umamusume__Pretty_Derby.json", "../data/1206_adjacency_list_Umamusume__Pretty_Derby.json")
